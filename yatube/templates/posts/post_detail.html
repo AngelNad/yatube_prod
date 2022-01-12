@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}
+  Пост {{ post_user.title|truncatechars:30 }}
+{% endblock %}
+{% load thumbnail %}
+{% load user_filters %}
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+      <aside class="col-12 col-md-3">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <u>Дата публикации:</u> {{ post_user.pub_date|date:"d E Y" }}
+          </li>
+          {% if post_user.group %}
+            <li class="list-group-item">
+              <u>Группа:</u> {{ post_user.group.title }}<br>
+              <a href="{% url 'posts:group_posts' post_user.group.slug %}">
+                все записи группы
+              </a>
+            </li>
+          {% endif %}
+          <li class="list-group-item">
+            <u>Автор публикации:</u><br>
+            {{ post_user.author.get_full_name }} ({{ post_user.author }})
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Всего постов автора:  <span >{{ post_count }}</span>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'posts:profile' post_user.author.username %}">
+              все посты пользователя
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <article class="col-12 col-md-9">
+        {% thumbnail post_user.image "960x339" upscale=True as im %}
+          <img class="card-img my-2" src="{{ im.url }}" alt="{{ post_user.text|truncatewords:5 }}">
+        {% endthumbnail %}
+        <p><h2>{{ post_user.title }}</h2></p>
+        <p>{{ post_user.text|linebreaksbr }}</p>
+        {% if user == post_user.author %}
+        <a class="btn btn-primary" href="{% url 'posts:post_edit' post_user.pk %}">
+          редактировать запись
+        </a>
+        {% endif %}
+{#        <div class="article-footer">#}
+{#          <span title="Поставить лайк">#}
+{#            <a class="link-secondary" href="{% url 'posts:post_like' post_user.pk %}"><i class="far fa-heart"></i>{{ count_like_post }}</a>#}
+{#          </span>#}
+{#        </div>#}
+{#        <footer>#}
+{#          <ul class="actions">#}
+{#            <li style="display: inline-flex;"></li>#}
+{#          </ul>#}
+{#          <ul class="stats">#}
+{#          <li>#}
+{#            <a class="icon solid fa-heart" href="{% url 'posts:post_like' post_user.pk %}"> {{ count_like_post }} </a>#}
+{#          </li>#}
+{#          </ul>#}
+{#        </footer>#}
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="btn-group">
+            <div>
+              {% if liking_post_user %}
+                <a class="badge badge-pill"  href="{% url 'posts:post_dislike' post_user.pk %}" role="button">
+                    <b>Нравится</b> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="#ff4136" class="bi bi-heart" viewBox="0 0 20 20">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg>
+                </a>
+                {{ count_like_post }}
+              {% else %}
+                <a class="badge badge-pill"  href="{% url 'posts:post_like' post_user.pk %}" role="button">
+                    <b>Нравится</b> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="#ff4136" class="bi bi-heart" viewBox="0 0 20 20">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg>
+                </a>
+                {{ count_like_post }}
+              {% endif %}
+                😍
+                <!-- Возвращение прокрутки на исходное место -->
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function (event) {
+                            var scrollpos = localStorage.getItem('scrollpos');
+                            if (scrollpos) window.scrollTo(0, scrollpos);
+                        });
+                        window.onbeforeunload = function (e) {
+                            localStorage.setItem('scrollpos', window.scrollY);
+                        };
+                    </script>
+                <a class="badge badge-pill badge-light" href="{% url 'posts:add_comment' post_user.pk %}" role="button">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0074d9" class="bi bi-chat-left" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                  </svg>
+                </a>
+                <span>{{ count_post_comments }}</span>
+            </div>
+          </div>
+        </div>
+        {% include 'posts/includes/comments.html' %}
+      </article>
+    </div>
+</div>
+{% endblock %}

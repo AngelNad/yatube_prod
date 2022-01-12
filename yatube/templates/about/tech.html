@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Технологии{% endblock %}
+{% block content %}
+{% comment %} Колонки с отступом сверху и снизу {% endcomment %}
+<div class="container py-5">
+    <div class="row">
+      <h1>Технологии</h1>
+      {% comment %}
+        Боковой блок со списком технологий
+        Займет всю ширину блока на мобильном
+        и 25% при размерах экрана ≥768px
+      {% endcomment %}
+      <aside class="col-12 col-md-3">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Python 3.9.0
+          </li>
+          <li class="list-group-item">
+            Django 2.2.16
+          </li>
+          <li class="list-group-item">
+            HTML 5
+          </li>
+          <li class="list-group-item">
+            CSS | Bootstrap v5.1.0
+          </li>
+          <li class="list-group-item">
+            JavaScript
+          </li>
+          <li class="list-group-item">
+            IDE: PyCharm Pro
+          </li>
+        </ul>
+      </aside>
+      {% comment %}
+        Статья
+        Займет всю ширину блока на мобильном
+        и 75% при размерах экрана ≥768px
+      {% endcomment %}
+      <article class="col-12 col-md-9">
+      <p>
+        Данный сайт был создан с душой, творчеством, большой увлеченностью, упорством, временами отчаяньем, которое сменялось периодами счастья при преодолении препятствий, нахождении решений. Дедлайны помогали научиться правильно распределять время.<br>
+      </p>
+      <p>
+        Помощь и поддержка наставника Андрея Горлова, студентов 4 когорты 2021 года, ревьюера Максима Любиева, куратора Елены Первушиной безусловно неоценимы. Выражаю всем искреннюю благодарность.
+        <img class="card-img my-2" height="200" src="/static/img/matrix.jpg">
+      </p>
+      </article>
+    </div>
+</div>
+{% endblock %}
