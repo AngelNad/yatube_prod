@@ -14,7 +14,7 @@ SQLite
 ### Запуск проекта в dev-режиме
 - Клонируйте репозиторий и перейдите в него в командной строке:
 ```
-git clone https://github.com/AngelNad/yatube_prod
+git clone https://github.com/AngelNad/yatube_prod.git
 
 cd yatube_prod
 ```
